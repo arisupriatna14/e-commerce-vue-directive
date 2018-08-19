@@ -58,7 +58,7 @@
           <div class="col-lg-3" v-for="item in listAllItem">
             <br>
             <div class="card">
-              <img :src="item.imgUrl" class="card-img-top" alt="">
+              <img :src="item.imgUrl" class="card-img-top" style="height: 15rem; object-fit: cover" alt="">
               <div class="card-body">
                 <small>
                   <a href="#" class="text-dark">{{ item.title }}</a>
@@ -70,8 +70,42 @@
                 <i class="fa fa-diamond"></i>
                 <br>
                 <br>
-                <button type="button" class="btn btn-primary" @click="listItemUpdated(item.id, item.imgUrl, item.title, item.price)">Update</button>
-                <button :value="item.id" @click="deleteItem(item.id)" class="btn btn-danger btn-sm">Delete</button>
+                <button type="button" class="btn btn-primary btn-sm" @click="dataUpdate(item.id)" data-toggle="modal" data-target="#exampleModalCenter">Update</button>
+                <button @click="deleteItem(item.id)" class="btn btn-danger btn-sm">Delete</button>
+
+                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Update Item</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <form v-on:submit.prevent>
+                          <div class="form-group">
+                            <label>Name Item</label>
+                            <input type="text" class="form-control" v-model="itemUpdate.title" ref="title">
+                          </div>
+                          <div class="form-group">
+                            <label>Image</label>
+                            <input type="file" class="form-control-file" @change="processFile($event.target)" accept="image/png, image/jpeg">
+                          </div>
+                          <div class="form-group">
+                            <label>Price</label>
+                            <input type="text" class="form-control" v-model="itemUpdate.price">
+                          </div>
+                          <div class="form-group">
+                            <label>Category</label>
+                            <input type="text" class="form-control" v-model="itemUpdate.category">
+                          </div>
+                          <button type="submit" class="btn btn-primary" @click="updateItem(itemUpdate.id)">Update Item</button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

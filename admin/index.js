@@ -8,7 +8,8 @@ var app = new Vue({
     title: "",
     price: "",
     category: "",
-    listItemUpdate: []
+    itemUpdate: [],
+    image: ""
   },
   methods: {
     signin: function() {
@@ -54,25 +55,39 @@ var app = new Vue({
       window.location = "http://localhost:8080/add_item.html";
     },
 
+    processFile: function(data) {
+      this.image = data.files[0];
+    },
+
     addNewItem: function() {
-      axios({
-        method: "POST",
-        url: "http://localhost:3030/api/items/addItems",
-        data: {
-          imgUrl: this.imgUrl,
-          title: this.title,
-          price: this.price,
-          category: this.category
-        }
-      })
-        .then(() => {
-          swal("Add item success", "Ristore, Inc", "success");
-          setTimeout(() => {
-            window.location = "http://localhost:8080/index.html";
-          }, 2000);
-        })
-        .catch(err => {
-          swal("Try again!", "Ristore, Inc", "error");
+      let formData = new FormData();
+      formData.append("image", this.image);
+      axios
+        .post("http://localhost:3030/api/items/upload", formData)
+        .then(result => {
+          const imgUrl = result.data.link;
+          axios({
+            method: "POST",
+            url: "http://localhost:3030/api/items/addItems",
+            data: {
+              imgUrl: imgUrl,
+              title: this.title,
+              price: this.price,
+              category: this.category
+            }
+          })
+            .then(() => {
+              swal("Add item success", "Ristore, Inc", "success");
+              setTimeout(() => {
+                window.location = "http://localhost:8080/index.html";
+              }, 2000);
+            })
+            .catch(err => {
+              swal("Try again!", "Ristore, Inc", "error");
+            })
+            .catch(err => {
+              console.log(err);
+            });
         });
     },
 
@@ -96,31 +111,52 @@ var app = new Vue({
         });
     },
 
-    listItemUpdated: function(id, imgUrl, title, price) {
-      this.listItemUpdate.push({
-        id: "dasdas",
-        imgUrl: "imgUrl",
-        title: "title",
-        price: "price"
-      });
-      console.log(this.listItemUpdate);
+    dataUpdate: function(id) {
+      axios({
+        method: "GET",
+        url: `http://localhost:3030/api/items/${id}`
+      })
+        .then(result => {
+          this.itemUpdate = {
+            id: result.data.data._id,
+            title: result.data.data.title,
+            price: result.data.data.price,
+            category: result.data.data.category
+          };
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
 
     updateItem: function(id) {
-      console.log("ini id =====>", id);
-      axios({
-        method: "PUT",
-        url: `http://localhost:3030/api/items/updateItem/${id}`,
-        data: {
-          imgUrl: this.imgUrl,
-          title: this.title,
-          price: this.price
-        }
-      })
+      let formData = new FormData();
+      formData.append("image", this.image);
+      axios
+        .post("http://localhost:3030/api/items/upload", formData)
         .then(result => {
-          console.log("Update success ====> ", result);
+          const imgUrl = result.data.link;
+          axios({
+            method: "PUT",
+            url: `http://localhost:3030/api/items/updateItem/${id}`,
+            data: {
+              imgUrl: imgUrl,
+              title: this.itemUpdate.title,
+              price: this.itemUpdate.price,
+              category: this.itemUpdate.category
+            }
+          })
+            .then(result => {
+              swal("Update item success", "Ristore, Inc", "success");
+              setTimeout(() => {
+                window.location = "http://localhost:8080/index.html";
+              }, 2000);
+            })
+            .catch(err => {
+              swal("Update item failed", "Try again", "error");
+            });
         })
-        .catch(err => {
+        .cacth(err => {
           console.log(err);
         });
     },

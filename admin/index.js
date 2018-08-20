@@ -15,7 +15,7 @@ var app = new Vue({
     signin: function() {
       axios({
         method: "POST",
-        url: "http://localhost:3030/api/customers/signin",
+        url: "http://ecommerce-api.arisupriatna.com/api/customers/signin",
         data: {
           email: this.email,
           password: this.password
@@ -63,12 +63,12 @@ var app = new Vue({
       let formData = new FormData();
       formData.append("image", this.image);
       axios
-        .post("http://localhost:3030/api/items/upload", formData)
+        .post("http://ecommerce-api.arisupriatna.com/api/items/upload", formData)
         .then(result => {
           const imgUrl = result.data.link;
           axios({
             method: "POST",
-            url: "http://localhost:3030/api/items/addItems",
+            url: "http://ecommerce-api.arisupriatna.com/api/items/addItems",
             data: {
               imgUrl: imgUrl,
               title: this.title,
@@ -93,7 +93,7 @@ var app = new Vue({
 
     listAllDataItems() {
       axios
-        .get("http://localhost:3030/api/items")
+        .get("http://ecommerce-api.arisupriatna.com/api/items")
         .then(respon => {
           respon.data.dataAllItem.forEach(item => {
             this.listAllItem.push({
@@ -114,7 +114,7 @@ var app = new Vue({
     dataUpdate: function(id) {
       axios({
         method: "GET",
-        url: `http://localhost:3030/api/items/${id}`
+        url: `http://ecommerce-api.arisupriatna.com/api/items/${id}`
       })
         .then(result => {
           this.itemUpdate = {
@@ -133,12 +133,12 @@ var app = new Vue({
       let formData = new FormData();
       formData.append("image", this.image);
       axios
-        .post("http://localhost:3030/api/items/upload", formData)
+        .post("http://ecommerce-api.arisupriatna.com/api/items/upload", formData)
         .then(result => {
           const imgUrl = result.data.link;
           axios({
             method: "PUT",
-            url: `http://localhost:3030/api/items/updateItem/${id}`,
+            url: `http://ecommerce-api.arisupriatna.com/api/items/updateItem/${id}`,
             data: {
               imgUrl: imgUrl,
               title: this.itemUpdate.title,
@@ -164,7 +164,7 @@ var app = new Vue({
     deleteItem: function(id) {
       axios({
         method: "DELETE",
-        url: `http://localhost:3030/api/items/deleteItem/${id}`
+        url: `http://ecommerce-api.arisupriatna.com/api/items/deleteItem/${id}`
       })
         .then(result => {
           swal("Delete item success", "Ristore, Inc", "success");

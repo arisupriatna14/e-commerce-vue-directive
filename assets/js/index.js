@@ -4,11 +4,11 @@ var app = new Vue({
     categories: [
       {
         name: 'Laptop',
-        url: 'http://localhost:8080/category/laptop.html'
+        url: 'http://ecommerce.arisupriatna.com/category/laptop.html'
       },
       {
         name: 'Sticker',
-        url: 'http://localhost:8080/category/sticker.html'
+        url: 'http://ecommerce.arisupriatna.com/category/sticker.html'
       }
     ],
     tagPopuler: [
@@ -55,7 +55,7 @@ var app = new Vue({
     email: '',
     password: '',
     fullname: '',
-    urlHome: 'http://localhost:8080/home.html'
+    urlHome: 'http://ecommerce.arisupriatna.com/home.html'
   },
   methods: {
     convertPrice: function(price) {
@@ -73,7 +73,7 @@ var app = new Vue({
     },
 
     listAllDataItems() {
-      axios.get('http://localhost:3030/api/items')
+      axios.get('http://ecommerce-api.arisupriatna.com/api/items')
       .then(respon => {
         respon.data.dataAllItem.forEach(item => {
           this.listAllItem.push({
@@ -92,11 +92,10 @@ var app = new Vue({
     },
 
     checkOut: function() {
-      console.log(this.carts)
       const token = localStorage.getItem('token')
       axios({
         method: 'PATCH',
-        url: 'http://localhost:3030/api/customers/itemCollection',
+        url: 'http://ecommerce-api.arisupriatna.com/api/customers/itemCollection',
         data: {
           item: this.carts
         },
@@ -107,9 +106,8 @@ var app = new Vue({
         .then(() => {
           swal("Checkout Success. Thanks!", "Happy Shopping", "success");
           setTimeout(() => {
-            window.location = 'http://localhost:8080/home.html'
+            window.location = 'http://ecommerce.arisupriatna.com/home.html'
           }, 2000)
-          console.log('success checkout')
         })
         .catch(err => {
           console.log(err)
@@ -126,22 +124,22 @@ var app = new Vue({
     },
 
     formSignin: function() {
-      window.location = 'http://localhost:8080/signin.html'
+      window.location = 'http://ecommerce.arisupriatna.com/signin.html'
     },
 
     formSignup: function() {
-      window.location = 'http://localhost:8080/signup.html'
+      window.location = 'http://ecommerce.arisupriatna.com/signup.html'
     },
 
     logout: function() {
       localStorage.removeItem('token')
-      window.location = 'http://localhost:8080/index.html'
+      window.location = 'http://ecommerce.arisupriatna.com/index.html'
     },
 
     signin: function() {
       axios({
         method: 'POST',
-        url: 'http://localhost:3030/api/customers/signin',
+        url: 'http://ecommerce-api.arisupriatna.com/api/customers/signin',
         data: {
           email: this.email,
           password: this.password
@@ -155,7 +153,7 @@ var app = new Vue({
             text: 'Congrats',
           })
           setTimeout(() => {
-            window.location = 'http://localhost:8080/home.html'
+            window.location = 'http://ecommerce.arisupriatna.com/home.html'
           }, 2000)
         })
         .catch(err => {
@@ -171,7 +169,7 @@ var app = new Vue({
     signup: function() {
       axios({
         method: 'POST',
-        url: 'http://localhost:3030/api/customers',
+        url: 'http://ecommerce-api.arisupriatna.com/api/customers',
         data: {
           fullname: this.fullname,
           email: this.email,
@@ -186,7 +184,7 @@ var app = new Vue({
             text: 'Congratulations 🎉',
           })
           setTimeout(() => {
-            window.location = 'http://localhost:8080/home.html'
+            window.location = 'http://ecommerce.arisupriatna.com/home.html'
           }, 2000)
         })
         .catch(err => {
